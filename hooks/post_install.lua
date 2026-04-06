@@ -8,6 +8,13 @@ function PLUGIN:PostInstall(ctx)
   local installScript = rootPath .. "/install.sh"
   local version = ctx.version
 
+  -- remove old ~/.oh-my-zsh if it exists
+  local homeDir = os.getenv("HOME")
+  local ohMyZshDir = homeDir .. "/.oh-my-zsh"
+  os.execute("rm -rf " .. ohMyZshDir)
+
+  -- run the install script
+
   local cmd = "sh " .. installScript
   local result = os.execute(cmd)
 
@@ -15,3 +22,4 @@ function PLUGIN:PostInstall(ctx)
     error("Failed to run oh-my-zsh install script")
   end
 end
+
