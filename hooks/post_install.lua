@@ -1,12 +1,17 @@
---- Extension point, called after PreInstall, can perform additional operations,
---- such as file operations for the SDK installation directory or compile source code
---- Currently can be left unimplemented!
+--- Extension point, called after PreInstall
+--- Runs the oh-my-zsh install script
+--- @param ctx table
+--- @field ctx.rootPath string SDK installation directory
+--- @field ctx.version string Version being installed
 function PLUGIN:PostInstall(ctx)
-    --- ctx.rootPath SDK installation directory
-    local rootPath = ctx.rootPath
-    local sdkInfo = ctx.sdkInfo['sdk-name']
-    local path = sdkInfo.path
-    local version = sdkInfo.version
-    local name = sdkInfo.name
-    local note = sdkInfo.note
+  local rootPath = ctx.rootPath
+  local installScript = rootPath .. "/install.sh"
+  local version = ctx.version
+
+  local cmd = "sh " .. installScript
+  local result = os.execute(cmd)
+
+  if result == nil or result ~= 0 then
+    error("Failed to run oh-my-zsh install script")
+  end
 end

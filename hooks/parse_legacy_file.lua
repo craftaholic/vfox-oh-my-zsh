@@ -7,6 +7,6 @@ function PLUGIN:ParseLegacyFile(ctx)
     local versions = ctx:getInstalledVersions()
 
     return {
-        version = "xxx"
+        version = ""
     }
 end
