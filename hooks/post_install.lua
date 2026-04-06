@@ -15,7 +15,7 @@ function PLUGIN:PostInstall(ctx)
 
   -- run the install script
 
-  local cmd = "sh " .. installScript
+  local cmd = "sh " .. installScript .. " --unattended --keep-zshrc"
   local result = os.execute(cmd)
 
   if result == nil or result ~= 0 then
