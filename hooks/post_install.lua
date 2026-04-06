@@ -4,16 +4,19 @@
 --- @field ctx.rootPath string SDK installation directory
 --- @field ctx.version string Version being installed
 function PLUGIN:PostInstall(ctx)
-  local constants = require("constants")
   local homeDir = os.getenv("HOME")
   local ohMyZshDir = homeDir .. "/.oh-my-zsh"
-  local installUrl = constants.INSTALL_SCRIPT_URL
+  local installScript = "/tmp/vfox-ohmyzsh-install-" .. os.time() .. ".sh"
 
+  print("Removing existing oh-my-zsh installation...")
   os.execute("rm -rf " .. ohMyZshDir .. " 2>/dev/null || true")
 
-  os.execute("REPO=craftaholic/ohmyzsh curl -fsSL " .. installUrl .. " | sh /dev/stdin --unattended --keep-zshrc </dev/null")
+  print("Running oh-my-zsh install script...")
+  local installResult = os.execute("sh " .. installScript .. " --unattended --keep-zshrc")
 
-  os.execute("rm -f /tmp/vfox-ohmyzsh-install.sh 2>/dev/null || true")
+  if installResult == nil or installResult ~= 0 then
+    error("Failed to run oh-my-zsh install script")
+  end
 
   print("Installed oh-my-zsh from craftaholic/ohmyzsh fork")
 end
