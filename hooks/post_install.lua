@@ -6,7 +6,8 @@
 function PLUGIN:PostInstall(ctx)
   local homeDir = os.getenv("HOME")
   local ohMyZshDir = homeDir .. "/.oh-my-zsh"
-  local installScript = "/tmp/vfox-ohmyzsh-install-" .. os.time() .. ".sh"
+  local rootPath = ctx.rootPath
+  local installScript = rootPath .. "/install.sh"
 
   print("Removing existing oh-my-zsh installation...")
   os.execute("rm -rf " .. ohMyZshDir .. " 2>/dev/null || true")
