@@ -19,12 +19,9 @@ function PLUGIN:PreInstall(ctx)
     return nil, "Version not found: " .. version
   end
 
-  local installUrl = constants.OHMYZSH_BASE_URL .. "/" .. versionInfo.commit .. "/tools/install.sh"
-
   return {
     version = version,
-    url = installUrl,
-    sha256 = versionInfo.sha256,
+    url = versionInfo.url,
     note = "Installing oh-my-zsh " .. version,
   }
 end

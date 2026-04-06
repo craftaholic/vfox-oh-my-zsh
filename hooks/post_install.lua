@@ -1,20 +1,19 @@
 --- Extension point, called after PreInstall
---- Runs the oh-my-zsh install script
+--- Runs the oh-my-zsh install script from fork
 --- @param ctx table
 --- @field ctx.rootPath string SDK installation directory
 --- @field ctx.version string Version being installed
 function PLUGIN:PostInstall(ctx)
-  local rootPath = ctx.rootPath
-  local installScript = rootPath .. "/install.sh"
+  local constants = require("constants")
   local homeDir = os.getenv("HOME")
   local ohMyZshDir = homeDir .. "/.oh-my-zsh"
+  local installUrl = constants.INSTALL_SCRIPT_URL
 
   os.execute("rm -rf " .. ohMyZshDir .. " 2>/dev/null || true")
 
-  local installResult = os.execute("sh " .. installScript .. " --unattended --keep-zshrc")
+  os.execute("REPO=craftaholic/ohmyzsh curl -fsSL " .. installUrl .. " | sh /dev/stdin --unattended --keep-zshrc </dev/null")
 
-  if installResult == nil or installResult ~= 0 then
-    error("Failed to run oh-my-zsh install script")
-  end
+  os.execute("rm -f /tmp/vfox-ohmyzsh-install.sh 2>/dev/null || true")
+
+  print("Installed oh-my-zsh from craftaholic/ohmyzsh fork")
 end
-
